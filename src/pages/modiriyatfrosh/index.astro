@@ -1,0 +1,11 @@
+﻿---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { AdminLogin } from '../../components/AdminPanel';
+import { SiteBrand } from '../../components/PublicBrand';
+---
+<SiteLayout title="ورود مدیر | لوکس موتورز" description="ورود امن مدیران لوکس موتورز.">
+  <section class="admin-login-page" id="admin-login">
+    <div class="login-art"><div class="login-art-image"></div><a class="login-wordmark" href="/"><SiteBrand client:load /></a><div class="login-art-copy"><span class="eyebrow">LUX MOTORS · ADMIN</span><p>با آرامش و دقت،<br /><em>هر جزئیات را بسازید.</em></p></div><span class="login-art-foot">پنل امن مدیریت لوکس موتورز</span></div>
+    <div class="login-panel"><a class="back-home" href="/">← بازگشت به فروشگاه</a><AdminLogin client:load /><div class="login-copyright">لوکس موتورز · فضای مدیریت</div></div>
+  </section>
+</SiteLayout>

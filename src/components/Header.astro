@@ -1,0 +1,14 @@
+﻿---
+import { SiteBrand } from './PublicBrand';
+import CartBadge from './CartBadge';
+---
+<div class="announcement"><span data-copy-key="header.announcement">خودروهای وارداتی ممتاز · منطقه آزاد</span><a href="/store"><span data-copy-key="header.announcement_link">مشاهده مجموعه</span> <span aria-hidden="true">←</span></a></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" aria-label="صفحه اصلی"><SiteBrand client:load /></a>
+    <nav class="main-nav" aria-label="ناوبری اصلی">
+      <a href="/" data-copy-key="nav.home">خانه</a><a href="/#featured" data-copy-key="nav.featured">خودروهای منتخب</a><a href="/store" data-copy-key="nav.store">موجودی فروشگاه</a><a href="/about" data-copy-key="nav.about">درباره ما</a>
+    </nav>
+    <div class="header-actions"><a class="bag-link" href="/cart" aria-label="رفتن به سبد سفارش"><CartBadge client:load /></a></div>
+  </div>
+</header>

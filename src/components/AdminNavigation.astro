@@ -1,0 +1,20 @@
+﻿---
+const { active = '' } = Astro.props;
+const links = [
+  ['/modiriyatfrosh/dashboard', 'محصولات', 'products'],
+  ['/modiriyatfrosh/categories', 'دسته‌بندی‌ها', 'categories'],
+  ['/modiriyatfrosh/orders', 'سفارش‌ها', 'orders'],
+  ['/modiriyatfrosh/audit', 'گزارش انبار و رویدادها', 'audit'],
+  ['/modiriyatfrosh/settings', 'تنظیمات پرداخت', 'settings'],
+  ['/modiriyatfrosh/media', 'رسانه و لوگو', 'media'],
+  ['/modiriyatfrosh/banners', 'بنرها', 'banners'],
+  ['/modiriyatfrosh/content', 'محتوای سایت و تماس', 'content'],
+  ['/modiriyatfrosh/guide', 'راهنمای خرید', 'guide'],
+  ['/modiriyatfrosh/seo-products', 'سئوی محصولات', 'seo-products'],
+  ['/modiriyatfrosh/seo-categories', 'سئوی دسته‌ها', 'seo-categories'],
+  ['/modiriyatfrosh/admins', 'مدیران', 'admins'],
+];
+---
+<nav class="admin-feature-nav admin-section-nav" aria-label="بخش‌های مدیریت" dir="rtl">
+  {links.map(([href, label, key]) => <a href={href} class:list={{'admin-nav-active': active === key}}>{label}</a>)}
+</nav>

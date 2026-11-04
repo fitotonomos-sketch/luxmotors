@@ -1,0 +1,29 @@
+﻿---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import AdminOrders from '../../components/AdminOrders';
+import AdminSettings from '../../components/AdminSettings';
+import AdminStudio from '../../components/AdminStudio';
+import AdminUsers from '../../components/AdminUsers';
+import AdminNavigation from '../../components/AdminNavigation.astro';
+export function getStaticPaths() {
+  return [
+    { params: { section: 'products' }, props: { label: 'محصولات' } },
+    { params: { section: 'categories' }, props: { label: 'دسته‌بندی‌ها' } },
+    { params: { section: 'orders' }, props: { label: 'سفارش‌ها' } },
+    { params: { section: 'settings' }, props: { label: 'تنظیمات' } },
+    { params: { section: 'media' }, props: { label: 'رسانه' } },
+    { params: { section: 'banners' }, props: { label: 'بنرها' } },
+    { params: { section: 'content' }, props: { label: 'محتوای عمومی' } },
+    { params: { section: 'guide' }, props: { label: 'راهنمای خرید' } },
+    { params: { section: 'seo-products' }, props: { label: 'سئوی محصولات' } },
+    { params: { section: 'seo-categories' }, props: { label: 'سئوی دسته‌بندی‌ها' } },
+    { params: { section: 'audit' }, props: { label: 'گزارش رویدادها' } },
+    { params: { section: 'admins' }, props: { label: 'مدیران و دسترسی‌ها' } },
+  ];
+}
+const { label } = Astro.props;
+---
+<SiteLayout title={`${label} | مدیریت لوکس موتورز`}>
+  <div class="page-shell admin-section-shell"><AdminNavigation active={Astro.params.section} /></div>
+  {Astro.params.section === 'orders' ? <AdminOrders client:load /> : Astro.params.section === 'settings' ? <AdminSettings client:load /> : Astro.params.section === 'categories' ? <AdminStudio section="seo-categories" client:load /> : Astro.params.section === 'admins' ? <AdminUsers client:load /> : ['media','banners','content','guide','seo-products','seo-categories','audit'].includes(Astro.params.section || '') ? <AdminStudio section={Astro.params.section || ''} client:load /> : <section class="admin-gate page-shell" id="admin-access"><span class="gate-lock">⌑</span><span class="eyebrow">فضای مدیریت لوکس موتورز</span><h1>دسترسی به {label}</h1><p>برای مدیریت این بخش از پنل مدیر استفاده کنید.</p><a href="/modiriyatfrosh" class="button button-dark">ورود مدیر <span>←</span></a><a href="/" class="text-link">بازگشت به خانه</a></section>}
+</SiteLayout>

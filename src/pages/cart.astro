@@ -1,0 +1,7 @@
+﻿---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { CartPage } from '../components/CheckoutFlow';
+---
+<SiteLayout title="فهرست خودروهای انتخاب‌شده | لوکس موتورز" description="مرور خودروهای انتخاب‌شده در لوکس موتورز.">
+  <CartPage client:load />
+</SiteLayout>

@@ -1,0 +1,7 @@
+﻿---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { AuthCallback } from '../../components/AuthFlow';
+---
+<SiteLayout title="تأیید حساب مدیریت" description="تأیید امن حساب مدیر.">
+  <AuthCallback client:load />
+</SiteLayout>

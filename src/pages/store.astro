@@ -1,0 +1,10 @@
+﻿---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import StoreBrowser from '../components/StoreBrowser';
+---
+<SiteLayout title="موجودی خودروها | لوکس موتورز" description="موجودی خودروهای وارداتی لوکس موتورز؛ خودروها و مشخصات منتشرشده را ببینید.">
+  <section class="store-page page-shell" id="store">
+    <div class="store-intro"><div><span class="eyebrow"><i></i> <span data-copy-key="store.eyebrow">انتخاب‌های لوکس موتورز</span></span><h1><span data-copy-key="store.title">خودروهای منتخب</span></h1><p data-copy-key="store.description">موجودی و اطلاعات خودروهای منتشرشده را بررسی کنید.</p><p class="lux-sample-note" data-copy-key="store.disclaimer">خودروها و قیمت‌های نمونه صرفاً نمایشی و فرضی هستند.</p></div><div class="breadcrumb"><a href="/">خانه</a><span>/</span><span>فروشگاه</span></div></div>
+    <StoreBrowser client:load />
+  </section>
+</SiteLayout>

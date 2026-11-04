@@ -1,0 +1,8 @@
+﻿import {useEffect,useState} from 'react';
+import {supabase} from '../lib/supabase';
+type Category={id:string;name:string;slug:string;seo_title:string|null;seo_description:string|null;seo_image_path:string|null;canonical_url:string|null;robots:string};
+export default function CategoryBrowser(){
+ const[categories,setCategories]=useState<Category[]>([]);const[error,setError]=useState('');const slug=typeof window!=='undefined'?new URLSearchParams(window.location.search).get('slug'):null;
+ useEffect(()=>{if(!supabase){setError('دسته‌ها در دسترس نیستند.');return;}let query=supabase.from('categories').select('*').eq('is_published',true);if(slug)query=query.eq('slug',slug);query.order('name').then(({data,error})=>{if(error)setError('بارگذاری دسته‌ها انجام نشد.');setCategories(data||[]);});},[slug]);
+ const current=categories[0];return <section className="page-shell" id="published-categories" dir="rtl" style={{paddingBlock:55}}><span className="eyebrow">دسته‌بندی خودروها · لوکس موتورز</span><h1>{current?current.seo_title||current.name:'دسته‌بندی خودروها'}</h1>{error&&<p role="alert">{error}</p>}{!error&&!categories.length&&<p>{slug?'این دسته‌بندی منتشر نشده یا وجود ندارد.':'دسته‌بندی منتشرشده‌ای برای نمایش وجود ندارد.'}</p>}{current&&<><p>{current.seo_description}</p><a className="button button-dark" href={`/store?category=${encodeURIComponent(current.name)}`}>دیدن خودروهای این دسته ←</a></>}{!slug&&<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:16}}>{categories.map(c=><article key={c.id} className="category-filter" style={{padding:20}}><h2>{c.name}</h2>{c.seo_description&&<p>{c.seo_description}</p>}<a href={`/categories?slug=${encodeURIComponent(c.slug)}`}>دیدن خودروها ←</a></article>)}</div>}</section>;
+}

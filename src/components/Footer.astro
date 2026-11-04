@@ -1,0 +1,15 @@
+﻿---
+import B12Link from './B12Link.astro';
+import { SiteBrand, PublicFooterContent } from './PublicBrand';
+import ConsultationLink from './ConsultationLink';
+---
+<footer class="site-footer">
+  <div class="footer-main">
+    <div class="footer-brand"><a href="/"><SiteBrand client:load /></a><p data-copy-key="footer.description">خودروهای وارداتی منتخب، با نگاهی دقیق به طراحی، مهندسی و کیفیت.</p><PublicFooterContent client:load /></div>
+    <div><h3><a href="/purchase-guide" data-copy-key="footer.guide">راهنمای خرید</a></h3><a href="/store" data-copy-key="footer.store">فروشگاه</a><a href="/#featured" data-copy-key="footer.vehicles">خودروهای منتخب</a></div>
+    <div><h3 data-copy-key="footer.support">همراه شما</h3><a href="/about" data-copy-key="footer.about">درباره لوکس موتورز</a><ConsultationLink className="footer-consult" client:load /><span data-copy-key="footer.disclaimer">مشخصات و موجودی با استعلام تأیید می‌شود</span></div>
+    <div class="footer-note"><span class="eyebrow" data-copy-key="footer.brand_eyebrow">LUX MOTORS · FREE ZONE</span><p data-copy-key="footer.brand_tagline">وقارِ حرکت، فراتر از مسیر.</p><span class="footer-flower">✳</span></div>
+  </div>
+  <div class="footer-bottom"><span data-copy-key="footer.copyright">© ۱۴۰۵ لوکس موتورز · تمام حقوق محفوظ است.</span><span data-copy-key="footer.copyright_note">خودروهای وارداتی منطقه آزاد</span></div>
+  <B12Link />
+</footer>
