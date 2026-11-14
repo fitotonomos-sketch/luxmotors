@@ -1,5 +1,7 @@
+
 ---
 import '../styles/global.css';
+
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PublicMetaSync from '../components/PublicBrand';
@@ -8,61 +10,135 @@ import HeroBannerSync from '../components/HeroBannerSync';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import PurchaseGuide from '../components/PurchaseGuide';
 
-const { title = 'لوکس موتورز | خودروهای وارداتی منطقه آزاد', description = 'خودروهای وارداتی منتخب لوکس موتورز.' } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  robots?: string;
+}
 
-const canonicalBase = import.meta.env.PUBLIC_SITE_URL || Astro.site?.origin || Astro.url.origin;
-const canonicalPath = ['/products', '/categories'].includes(Astro.url.pathname)
-  ? `${Astro.url.pathname}${Astro.url.search}`
-  : Astro.url.pathname;
-const canonicalHref = new URL(canonicalPath, canonicalBase).href;
+const {
+  title = 'لوکس موتورز | خودروهای وارداتی منطقه آزاد',
+  description = 'خودروهای وارداتی منتخب لوکس موتورز؛ مرجع معرفی و عرضه خودروهای خاص و لوکس در منطقه آزاد.',
+  canonical,
+  ogImage,
+  robots = 'index,follow',
+} = Astro.props;
+
+const siteUrl = (
+  import.meta.env.PUBLIC_SITE_URL ||
+  Astro.site?.origin ||
+  Astro.url.origin
+).replace(/\/+$/, '');
+
+const canonicalHref = new URL(
+  canonical || Astro.url.pathname,
+  siteUrl
+).href;
+
+const resolvedOgImage = ogImage
+  ? new URL(ogImage, siteUrl).href
+  : undefined;
+
+const isPrivateRoute =
+  /^\/(modiriyatfrosh|cart|checkout|payment|auth)(\/|$)/i.test(
+    Astro.url.pathname
+  );
+
+const robotsContent = isPrivateRoute
+  ? 'noindex,nofollow'
+  : robots;
 ---
+
 <!doctype html>
 <html lang="fa" dir="rtl">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+
     <meta name="description" content={description} />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content={robotsContent} />
+
+    <link rel="canonical" href={canonicalHref} />
+
+    <meta name="theme-color" content="#171716" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Lux Motors" />
+    <meta property="og:locale" content="fa_IR" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:url" content={canonicalHref} />
+
+    {resolvedOgImage && (
+      <meta property="og:image" content={resolvedOgImage} />
+    )}
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <link rel="canonical" href={canonicalHref} />
+
+    {resolvedOgImage && (
+      <meta name="twitter:image" content={resolvedOgImage} />
+    )}
+
+    <!-- Structured Data -->
     <script
       type="application/ld+json"
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Store',
-        name: title,
+        name: 'Lux Motors',
         description,
-        url: Astro.url.origin,
+        url: siteUrl,
+        image: resolvedOgImage,
+        inLanguage: 'fa-IR',
       })}
     />
-    <meta name="theme-color" content="#171716" />
-    <title>{title}</title>
+
+    <!-- Font Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin="anonymous"
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
   </head>
+
   <body>
+    <!-- Public Website Synchronization -->
     <PublicMetaSync client:load />
     <SiteCopySync client:load />
     <HeroBannerSync client:load />
+
+    <!-- Main Layout -->
     <Header />
+
     <WhatsAppFloat client:load />
+
     <PurchaseGuide client:load />
-    <main><slot /></main>
+
+    <main id="main-content">
+      <slot />
+    </main>
+
     <Footer />
 
-    <!-- راه‌اندازی فرم‌ها در همهٔ صفحات -->
+    <!-- Website Forms Initialization -->
     <script>
       import '../lib/forms';
     </script>
+
   </body>
 </html>
