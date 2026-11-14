@@ -22,7 +22,7 @@ Deno.serve(async (req: Request) => {
     const siteUrl = new URL(requestedSite)
     if (siteUrl.protocol !== 'https:') throw new Error('Only HTTPS site URLs are allowed')
     const origin = siteUrl.origin
-    const productUrls = (products || []).map((p) => ({ loc: p.canonical_url || `${origin}/products?slug=${encodeURIComponent(p.slug)}`, lastmod: p.updated_at }))
+    const productUrls = (products || []).map((p) => ({ loc: p.canonical_url || `${origin}/products/${encodeURIComponent(p.slug)}`, lastmod: p.updated_at }))
     const categoryUrls = (categories || []).map((c) => ({ loc: c.canonical_url || `${origin}/categories?slug=${encodeURIComponent(c.slug)}`, lastmod: c.updated_at }))
     const urls = [...productUrls, ...categoryUrls]
     const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${xmlEscape(u.loc)}</loc>${u.lastmod ? `<lastmod>${new Date(u.lastmod).toISOString()}</lastmod>` : ''}</url>`).join('')}</urlset>`
