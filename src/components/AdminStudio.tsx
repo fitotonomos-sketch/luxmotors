@@ -2135,7 +2135,7 @@ export default function AdminStudio({
               <aside>
                 <b>پیش‌نمایش نتیجه جست‌وجو</b>
                 <h3>{seo.seo_title || product.name}</h3>
-                <p>{seo.canonical_url || `/products?slug=${encodeURIComponent(product.slug)}`}</p>
+                <p>{seo.canonical_url || `/products/${encodeURIComponent(product.slug)}`}</p>
                 <p>
                   {seo.seo_description ||
                     'توضیحات محصول در نتیجه جست‌وجو نمایش داده می‌شود.'}
