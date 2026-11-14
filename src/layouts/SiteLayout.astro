@@ -30,7 +30,6 @@ const canonicalHref = new URL(canonicalPath, canonicalBase).href;
     <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'Store', name: title, description, url: Astro.url.origin })} />
     <meta name="theme-color" content="#171716" />
     <title>{title}</title>
-    <link rel="preconnect" href="https://cdn.b12.io" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
