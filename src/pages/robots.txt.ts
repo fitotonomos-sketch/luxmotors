@@ -1,19 +1,54 @@
-﻿import type { APIRoute } from 'astro';
-import b12Context from '../b12Context.json';
 
-const productionRobotsTxt = `User-agent: *\nAllow: /\nDisallow: /modiriyatfrosh\nDisallow: /cart\nDisallow: /checkout\nDisallow: /payment\nDisallow: /auth/\n`;
-const stagingRobotsTxt = `User-agent: *\nDisallow: /\n`;
+import type { APIRoute } from 'astro';
+
+const productionRobotsTxt = [
+  'User-agent: *',
+  'Allow: /',
+  'Disallow: /modiriyatfrosh',
+  'Disallow: /cart',
+  'Disallow: /checkout',
+  'Disallow: /payment',
+  'Disallow: /auth/',
+].join('\n');
+
+const stagingRobotsTxt = [
+  'User-agent: *',
+  'Disallow: /',
+].join('\n');
 
 export const GET: APIRoute = ({ site }) => {
-  const origin = site?.origin || import.meta.env.PUBLIC_SITE_URL || b12Context.website_url;
-  const siteUrl = new URL(origin);
-  const sitemapURL = new URL('/sitemap-index.xml', siteUrl);
-  const preview = import.meta.env.PUBLIC_IS_PREVIEW === 'true' || (!import.meta.env.PUBLIC_SITE_URL && b12Context.is_preview);
-  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-  const sitemapFunction = !preview && supabaseUrl
-    ? new URL('/functions/v1/public-sitemap', supabaseUrl)
-    : null;
-  if (sitemapFunction) sitemapFunction.searchParams.set('site', siteUrl.origin);
-  const body = `${preview ? stagingRobotsTxt : productionRobotsTxt}\nSitemap: ${sitemapURL.href}\n${sitemapFunction ? `Sitemap: ${sitemapFunction.href}\n` : ''}`;
-  return new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  const configuredUrl =
+    import.meta.env.PUBLIC_SITE_URL ||
+    site?.origin ||
+    'https://luxmotors.onrender.com';
+
+  const siteUrl = new URL(configuredUrl);
+  const preview = import.meta.env.PUBLIC_IS_PREVIEW === 'true';
+
+  let body = preview
+    ? stagingRobotsTxt
+    : productionRobotsTxt;
+
+  if (!preview) {
+    body += `\n\nSitemap: ${new URL('/sitemap-index.xml', siteUrl).href}\n`;
+
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+
+    if (supabaseUrl) {
+      const dynamicSitemap = new URL(
+        '/functions/v1/public-sitemap',
+        supabaseUrl
+      );
+
+      dynamicSitemap.searchParams.set('site', siteUrl.origin);
+
+      body += `Sitemap: ${dynamicSitemap.href}\n`;
+    }
+  }
+
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+  });
 };
