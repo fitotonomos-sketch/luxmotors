@@ -1,7 +1,73 @@
-﻿---
-import SiteLayout from '../../layouts/SiteLayout.astro';
-export function getStaticPaths() { return []; }
+
 ---
-<SiteLayout title="محصول | خانه‌دار">
-  <section class="product-unavailable page-shell" id="product-details"><span class="empty-icon">⌁</span><span class="eyebrow">صفحه‌ی محصول</span><h1>هنوز محصولی برای نمایش نیست</h1><p>صفحه‌ی محصول مستقل پس از اتصال فروشگاه به پایگاه داده و انتشار محصولات فعال می‌شود.</p><a href="/store" class="button button-dark">بازگشت به فروشگاه <span>←</span></a></section>
+import { createClient } from '@supabase/supabase-js';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ProductDetails from '../../components/ProductDetails';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey =
+  import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY ||
+  import.meta.env.PUBLIC_SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    'Missing public Supabase configuration for product page generation.'
+  );
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+export async function getStaticPaths() {
+  const url = import.meta.env.PUBLIC_SUPABASE_URL;
+  const key =
+    import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    import.meta.env.PUBLIC_SUPABASE_ANON_KEY ||
+    import.meta.env.PUBLIC_SUPABASE_KEY;
+
+  if (!url || !key) {
+    throw new Error('Supabase build configuration is missing.');
+  }
+
+  const client = createClient(url, key);
+
+  const { data, error } = await client
+    .from('products')
+    .select('*')
+    .eq('published', true);
+
+  if (error) {
+    throw new Error(`Product page generation failed: ${error.message}`);
+  }
+
+  return (data || []).map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+
+const title =
+  product.seo_title || `${product.name} | لوکس موتورز`;
+
+const description =
+  product.seo_description ||
+  product.short_description ||
+  product.description ||
+  'مشخصات و اطلاعات خودروی وارداتی در لوکس موتورز.';
+
+const canonical =
+  product.canonical_url ||
+  new URL(`/products/${encodeURIComponent(product.slug)}`, Astro.site).href;
+---
+
+<SiteLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  ogImage={product.seo_image_path || product.image_url}
+  robots={product.robots || 'index,follow'}
+>
+  <ProductDetails client:load initialProduct={product} />
 </SiteLayout>
