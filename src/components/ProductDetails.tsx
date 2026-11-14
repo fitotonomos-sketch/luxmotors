@@ -11,9 +11,16 @@ type VehicleProduct = {
 const money = (value: number) => new Intl.NumberFormat('fa-IR').format(value);
 const safeDecode = (value: string) => { try { return decodeURIComponent(value); } catch { return value; } };
 const imageUrl = (source: string) => source.startsWith('http') ? source : supabase?.storage.from('site-media').getPublicUrl(source).data.publicUrl || ''; 
-export default function ProductDetails() {
-  const [product, setProduct] = useState<VehicleProduct | null>(null);
-  const [loading, setLoading] = useState(true);
+export default function ProductDetails({
+  initialProduct,
+}: {
+  initialProduct?: VehicleProduct;
+}) {
+  const [product, setProduct] = useState<VehicleProduct | null>(
+  initialProduct || null
+);
+
+const [loading, setLoading] = useState(!initialProduct);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [activeImage, setActiveImage] = useState('');
