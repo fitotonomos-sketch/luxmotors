@@ -1,4 +1,4 @@
-﻿---
+---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -7,9 +7,13 @@ import SiteCopySync from '../components/SiteCopySync';
 import HeroBannerSync from '../components/HeroBannerSync';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import PurchaseGuide from '../components/PurchaseGuide';
+
 const { title = 'لوکس موتورز | خودروهای وارداتی منطقه آزاد', description = 'خودروهای وارداتی منتخب لوکس موتورز.' } = Astro.props;
+
 const canonicalBase = import.meta.env.PUBLIC_SITE_URL || Astro.site?.origin || Astro.url.origin;
-const canonicalPath = ['/products', '/categories'].includes(Astro.url.pathname) ? `${Astro.url.pathname}${Astro.url.search}` : Astro.url.pathname;
+const canonicalPath = ['/products', '/categories'].includes(Astro.url.pathname)
+  ? `${Astro.url.pathname}${Astro.url.search}`
+  : Astro.url.pathname;
 const canonicalHref = new URL(canonicalPath, canonicalBase).href;
 ---
 <!doctype html>
@@ -27,12 +31,24 @@ const canonicalHref = new URL(canonicalPath, canonicalBase).href;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={canonicalHref} />
-    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@type': 'Store', name: title, description, url: Astro.url.origin })} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Store',
+        name: title,
+        description,
+        url: Astro.url.origin,
+      })}
+    />
     <meta name="theme-color" content="#171716" />
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <PublicMetaSync client:load />
@@ -43,5 +59,10 @@ const canonicalHref = new URL(canonicalPath, canonicalBase).href;
     <PurchaseGuide client:load />
     <main><slot /></main>
     <Footer />
+
+    <!-- راه‌اندازی فرم‌ها در همهٔ صفحات -->
+    <script>
+      import '../lib/forms';
+    </script>
   </body>
 </html>
