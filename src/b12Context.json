@@ -1,10 +1,10 @@
 ﻿{
   "recaptcha_version": 3,
   "client_uid": "oonrTCvL",
-  "product_url": "https://b12.io",
+  "product_url": "https://luxmotors.onrender.com",
   "debug": false,
-  "preview_frame_script": "https://static.b12.io/static/preview_frame_v2/preview_frame_v2.8b9143f6d50e.js",
-  "website_url": "https://luxmotors-staging.b12sites.com",
+  "preview_frame_script": "https://luxmotors.onrender.com",
+  "website_url": "https://luxmotors.onrender.com",
   "is_preview": true,
   "favicon": "https://cdn.b12.io/client_media/oonrTCvL/49489237-c343-11f1-b7a9-0242ac110002-jpeg-thumbnail_image.jpeg"
 }
